@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="portfolio.png">
+    <title>Ganesh M | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep:#0f172a ;
+            --accent-cyan: #0ea5e9;
+            --accent-glow: rgba(14, 165, 233, 0.4);
+            --glass: rgba(15, 23, 42, 0.4);
+            --glass-border: rgba(14, 165, 233, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-deep);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: var(--accent-cyan); }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover { color: var(--accent-cyan); }
+
+        .btn-contact-top {
+            background: var(--accent-cyan);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        /* Hero Styling */
+        .hero {
+            padding: 100px 0;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Circular Image Styling */
+        .profile-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-image {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%; /* Makes the image round */
+            object-fit: cover;
+            border: 4px solid var(--accent-cyan);
+            box-shadow: 0 0 30px var(--accent-glow);
+            z-index: 2;
+        }
+
+        .profile-glow {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: var(--accent-glow);
+            filter: blur(50px);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px var(--glass-border);
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .hero h2 {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 480px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        /* Buttons */
+        .action-btns { display: flex; flex-wrap: wrap; gap: 15px; }
+        
+        .btn-main {
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.4s;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .resume-btn {
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+            color: #000;
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        .secondary-btn {
+            border: 1.5px solid var(--glass-border);
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .secondary-btn:hover { 
+            border-color: var(--accent-cyan); 
+            background: var(--accent-glow);
+        }
+
+        /* Section Spacing */
+        section { padding: 20px 0;
+        margin:500; }
+        .section-title { font-size: 2.5rem; margin-bottom: 10px; color: var(--accent-cyan); }
+
+        /* Contact Details */
+        .contact-footer {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 50px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 40px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
+
+        .info-item i { color: var(--accent-cyan); font-size: 1.2rem; }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero p { margin: 0 auto 40px auto; }
+            .action-btns { justify-content: center; }
+            .profile-image { width: 250px; height: 250px; }
+            .hero h1 { font-size: 3.5rem; }
+        }
+        .skill-pill {
+  color:#94a3b8;   /* blue text */
+}
+.profile-gif {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: url("ring.gif") center/cover no-repeat;
+  padding: 10px;
+}
+
+.profile-gif img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.bg-gif {
+  filter: blur(2px);
+}
+.bg-giff{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;          /* important for professional look */
+  z-index: 1;}
+
+
+        
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo"><i class="fa-solid fa-cube"></i> Ganesh M</div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="mailto:mganesh1911@gmail.com" class="btn-contact-top">Contact Me</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="glass-card">
+                <h1>Ganesh M</h1>
+                <h2>Business Analyst | Software Engineer</h2>
+                <p>
+                    Passionate Computer Science Engineering student with a strong interest in Business Analysis, focused on bridging technical solutions with business strategy through data-driven insights and problem-solving.
+                </p>
+                <div class="action-btns">
+                    <a href="https://drive.google.com/file/d/1pE2LxYKSzQaKqsccTdgac5OqBjeTH3XD/view?usp=drive_link"  class="btn-main resume-btn">View Resume</a>
+                    <a href="https://github.com/Ganesh-2312101" class="btn-main secondary-btn skill-pill" >GitHub</a>
+                    <a href="https://www.linkedin.com/in/ganesh-m-359875320/" class="btn-main secondary-btn skill-pill">LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="profile-container ">
+                <div class="profile-glow bg-gif"></div>
+                <img src="profile.jpg" alt="Ganesh M" class="profile-image">
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="glass-card">
+                <p style="color: #94a3b8; line-height: 1.8;">
+           I am a Computer Science Engineering student with a strong interest in Business Analysis. I enjoy understanding business requirements, analyzing user needs, and transforming them into effective technical and design solutions. My academic background has given me a solid foundation in software development, problem-solving, and analytical thinking. I am passionate about creating intuitive, user-friendly interfaces that enhance overall user experience. I continuously work on improving my skills in data analysis, design thinking, and modern web technologies to bridge the gap between business goals and technology-driven solutions.         
+                </p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2 class="section-title">Skills</h2>
+            <div class="glass-card">
+                <span><a  class="skill-pill btn-main secondary-btn">Numpy</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">Pandas</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">Docker</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">ETL</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">HTML</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">CSS</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">python</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">Power BI</a></span>
+                <span ><a class="skill-pill btn-main secondary-btn">Matplotlib</a></span>
+  </div>
+        </section>
+        <section id="projects">
+            <h2 class="section-title">Projects</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div class="glass-card">
+                    <h3><a href="https://rentngo.onrender.com/"style="color: var(--accent-cyan); margin-bottom: 15px;">Acting Driver Booking Management</a></h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">An Acting Driver Booking System is a digital platform that connects users with verified, temporary drivers for personal or commercial trips via real-time tracking and matching. It streamlines the entire process—from booking and secure payments to ratings—offering a safer and more convenient alternative to traditional methods..</p>
+                </div>
+                <div class="glass-card">
+                    <h3><a href="https://github.com/Ganesh-2312101/Student_Learning_Management_System-using-springboot-and-maven"style="color: var(--accent-cyan); margin-bottom: 15px;">Student Management System</a></h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">A Student Management System is a centralized digital platform designed to store, organize, and manage detailed information about students. It streamlines academic and administrative processes by enabling efficient record handling, quick search functionality, real-time updates, and student categorization, thereby improving data accuracy and overall institutional efficiency.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="contact-footer">
+            <div>
+                <div class="info-item"><i class="fa-solid fa-phone"></i> 9486571802</div>
+                <div class="info-item"><i class="fa-solid fa-envelope"></i> mganesh1911@gmail.com</div>
+            </div>
+            <div style="text-align: right;">
+                <p style="margin-bottom: 10px; color: #64748b;">Social Connect:</p>
+                    <a href="https://www.linkedin.com/in/ganesh-m-359875320/" style="color: var(--accent-cyan); font-size: 1.5rem; margin-left: 15px;"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/Ganesh-2312101" style="color: var(--accent-cyan); font-size: 1.5rem; margin-left: 15px;"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.PlaneGeometry(20, 20, 30, 30);
+        const material = new THREE.MeshBasicMaterial({ color: 0x0ea5e9, wireframe: true, transparent: true, opacity: 0.15 });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -1.2;
+        scene.add(mesh);
+        camera.position.z = 5;
+
+        /*function animate() {
+            requestAnimationFrame(animate);
+            const time = Date.now() * 0.001;
+            const positions = mesh.geometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+               const x = positions[i];
+                const y = positions[i+1];
+                positions[i+2] = Math.sin(x * 0.5 + time) * 0.4 + Math.cos(y * 0.5 + time) * 0.4;
+            }
+            mesh.geometry.attributes.position.needsUpdate = true;
+            renderer.render(scene, camera);
+        }*/
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        animate();
+    </script>
+</body>
+</html>
